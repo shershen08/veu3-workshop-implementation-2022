@@ -1,7 +1,8 @@
 <template>
     <main>
     <div class="container">
-
+<button @click="onClick">load products</button>
+Total products: {{length}}
       <!--Navbar-->
       <nav class="navbar navbar-expand-lg navbar-dark mdb-color lighten-3 mt-3 mb-5">
 
@@ -127,10 +128,10 @@
 
 <script>
 // @ is an alias to /src
-import { computed } from 'vue'
 import {useRouter} from 'vue-router'
 import ProductItem from '@/components/ProductItem'
-import {useStore} from 'vuex'
+// import {useStore} from 'vuex'
+import {useProducts} from '@/hooks/products'
 
 export default {
   name: 'HomeView',
@@ -138,10 +139,9 @@ export default {
     ProductItem
   },
   setup(){
-    const store = useStore()
     const router = useRouter()
-    
-    const products = computed(() => store.state.products)
+    const {products, loadData, length} = useProducts()
+  
 
     const gotoProduct = ({id}) => {
       router.push({
@@ -152,10 +152,16 @@ export default {
       })
     }
 
+    const onClick = () => {
+      loadData()
+    }
+
     return {
       //items,
       gotoProduct,
-      products
+      products,
+      onClick,
+      length
     }
     
   },
