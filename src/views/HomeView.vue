@@ -130,6 +130,7 @@
 import { onMounted, reactive } from 'vue'
 import {useRouter} from 'vue-router'
 import ProductItem from '@/components/ProductItem'
+import {loadProducts} from '@/services/products'
 
 export default {
   name: 'HomeView',
@@ -148,15 +149,10 @@ export default {
 
     const loadData = () => {
       items.loading = true
-      fetch('https://fakestoreapi.com/products')
-            .then(res=>res.json())
-            .then(json=> {
-              items.items = json
+      
+      loadProducts().then(json=> {
+              items.items = json.data
               items.loading = false
-            })
-            .catch(() => {
-                items.loading = false
-                  items.error = true
             })
     }
 

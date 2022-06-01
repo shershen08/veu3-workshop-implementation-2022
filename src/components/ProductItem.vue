@@ -44,16 +44,19 @@ export default {
         data: {
             type: Object,
             required: true,
-            default: () => ({
-                secondImage: {
-                    front: 'foo'
-                }
-            })
+            // default: () => ({
+            //     image: '',
+            //     price: null,
+            //     secondImage: {
+            //         front: 'foo'
+            //     }
+            // })
         }
     },
     setup(props){
         const product = reactive(props.data)
         // product.title = 'ertyuio' + product.title
+
         return {
             ...toRefs(product)
         }
