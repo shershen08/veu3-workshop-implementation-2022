@@ -27,6 +27,28 @@
 
   </footer>
 </template>
+<script>
+import { defineComponent, onMounted,  } from 'vue'
+import {loadProducts} from '@/services/products'
+import {useStore} from 'vuex'
+
+export default defineComponent({
+  setup() {
+    const store = useStore()
+
+  const loadData = () => {
+        loadProducts().then(json=> {
+              store.commit('setProducs', json.data)
+            })
+  }
+
+     onMounted(() => {
+      loadData()
+    })
+  },
+})
+</script>
+
 
 <style>
 #app {

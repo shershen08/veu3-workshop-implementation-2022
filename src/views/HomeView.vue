@@ -50,13 +50,13 @@
 
        <!--Section: Products v.3-->
       <section class="text-center mb-4">
-
+<!-- 
         <div v-if="items.loading">
           loading catalogue...
         </div>
         <div v-if="items.error">
           Error laoding catalogue
-        </div>
+        </div> -->
 
         <!--Grid row-->
         <div class="row wow fadeIn">
@@ -64,7 +64,7 @@
           <!--Grid column-->
           <div class="col-lg-3 col-md-6 mb-4"
               @click="gotoProduct(item)"
-               v-for="(item, index) in items.items" :key="`${index}--items`">
+               v-for="(item, index) in products" :key="`${index}--items`">
 
             <ProductItem :data="item"/>
 
@@ -127,10 +127,10 @@
 
 <script>
 // @ is an alias to /src
-import { onMounted, reactive } from 'vue'
+import { computed } from 'vue'
 import {useRouter} from 'vue-router'
 import ProductItem from '@/components/ProductItem'
-import {loadProducts} from '@/services/products'
+import {useStore} from 'vuex'
 
 export default {
   name: 'HomeView',
@@ -138,23 +138,10 @@ export default {
     ProductItem
   },
   setup(){
-
+    const store = useStore()
     const router = useRouter()
-
-    let items = reactive({
-      loading: false,
-      error: false,
-      items: []
-    })
-
-    const loadData = () => {
-      items.loading = true
-      
-      loadProducts().then(json=> {
-              items.items = json.data
-              items.loading = false
-            })
-    }
+    
+    const products = computed(() => store.state.products)
 
     const gotoProduct = ({id}) => {
       router.push({
@@ -165,13 +152,10 @@ export default {
       })
     }
 
-    onMounted(() => {
-      loadData()
-    })
-
     return {
-      items,
-      gotoProduct
+      //items,
+      gotoProduct,
+      products
     }
     
   },
