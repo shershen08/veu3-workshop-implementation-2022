@@ -64,10 +64,9 @@ Total products: {{length}}
 
           <!--Grid column-->
           <div class="col-lg-3 col-md-6 mb-4"
-              @click="gotoProduct(item)"
                v-for="(item, index) in products" :key="`${index}--items`">
 
-            <ProductItem :data="item"/>
+            <ProductItem :data="item" @enter="gotoProduct(item)"/>
 
           </div>
           <!--Grid column-->

@@ -3,7 +3,7 @@
             <div class="card">
 
               <!--Card image-->
-              <div class="view overlay">
+              <div class="view overlay" @click="$emit('enter')">
                 <img :src="image" class="card-img-top"
                   alt="">
                 <a>
@@ -30,6 +30,9 @@
                   <strong>{{price}}$</strong>
                 </h4>
 
+                <input v-model="amount" type="number"/>
+                <button @click="addToCart">Add to cart</button>
+
               </div>
               <!--Card content-->
 
@@ -38,8 +41,11 @@
 </template>
 
 <script>
-import {reactive, toRefs} from 'vue'
+import {reactive, toRefs, ref} from 'vue'
+import {useStore} from 'vuex'
 export default {
+    emits: ['enter'],
+
     props: {
         data: {
             type: Object,
@@ -56,9 +62,18 @@ export default {
     setup(props){
         const product = reactive(props.data)
         // product.title = 'ertyuio' + product.title
+        const store = useStore()
+
+        const amount = ref(1)
+        const addToCart = () => {
+            store.commit('addCartItem', {product})
+            // product.qty =+ 1 
+        }
 
         return {
-            ...toRefs(product)
+            ...toRefs(product),
+            amount,
+            addToCart
         }
     }
 }

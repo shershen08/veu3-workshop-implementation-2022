@@ -1,4 +1,7 @@
 <template>
+<div>
+  {{cart}}
+</div>
   <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/product">product</router-link>
@@ -28,11 +31,18 @@
   </footer>
 </template>
 <script>
-import { defineComponent  } from 'vue'
+import { computed, defineComponent  } from 'vue'
+import {useStore} from 'vuex'
 
 export default defineComponent({
   setup() {
+    const store = useStore()
 
+    const cart = computed(() => store.state.cart)
+
+    return {
+      cart
+    }
   },
 })
 </script>
