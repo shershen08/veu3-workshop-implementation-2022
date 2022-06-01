@@ -55,44 +55,9 @@
         <div class="row wow fadeIn">
 
           <!--Grid column-->
-          <div class="col-lg-3 col-md-6 mb-4">
+          <div class="col-lg-3 col-md-6 mb-4" v-for="(item, index) in items" :key="`${index}--items`">
 
-            <!--Card-->
-            <div class="card">
-
-              <!--Card image-->
-              <div class="view overlay">
-                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg" class="card-img-top"
-                  alt="">
-                <a>
-                  <div class="mask rgba-white-slight"></div>
-                </a>
-              </div>
-              <!--Card image-->
-
-              <!--Card content-->
-              <div class="card-body text-center">
-                <!--Category & Title-->
-                <a href="" class="grey-text">
-                  <h5>Shirt</h5>
-                </a>
-                <h5>
-                  <strong>
-                    <a href="" class="dark-grey-text">Denim shirt
-                      <span class="badge badge-pill danger-color">NEW</span>
-                    </a>
-                  </strong>
-                </h5>
-
-                <h4 class="font-weight-bold blue-text">
-                  <strong>120$</strong>
-                </h4>
-
-              </div>
-              <!--Card content-->
-
-            </div>
-            <!--Card-->
+            <ProductItem :data="item"/>
 
           </div>
           <!--Grid column-->
@@ -153,11 +118,27 @@
 
 <script>
 // @ is an alias to /src
+import ProductItem from '@/components/ProductItem'
 
 export default {
   name: 'HomeView',
   components: {
-    
+    ProductItem
+  },
+  data: () => ({
+    items: []
+  }),
+  methods: {
+    loadData(){
+      fetch('https://fakestoreapi.com/products')
+            .then(res=>res.json())
+            .then(json=> {
+              this.items = json
+            })
+    }
+  },
+  mounted(){
+    this.loadData()
   }
 }
 </script>
