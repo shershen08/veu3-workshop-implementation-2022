@@ -62,7 +62,9 @@
         <div class="row wow fadeIn">
 
           <!--Grid column-->
-          <div class="col-lg-3 col-md-6 mb-4" v-for="(item, index) in items.items" :key="`${index}--items`">
+          <div class="col-lg-3 col-md-6 mb-4"
+              @click="gotoProduct(item)"
+               v-for="(item, index) in items.items" :key="`${index}--items`">
 
             <ProductItem :data="item"/>
 
@@ -125,8 +127,9 @@
 
 <script>
 // @ is an alias to /src
-import ProductItem from '@/components/ProductItem'
 import { onMounted, reactive } from 'vue'
+import {useRouter} from 'vue-router'
+import ProductItem from '@/components/ProductItem'
 
 export default {
   name: 'HomeView',
@@ -134,6 +137,8 @@ export default {
     ProductItem
   },
   setup(){
+
+    const router = useRouter()
 
     let items = reactive({
       loading: false,
@@ -155,12 +160,22 @@ export default {
             })
     }
 
+    const gotoProduct = ({id}) => {
+      router.push({
+        name: 'product',
+        params: {
+          id
+        }
+      })
+    }
+
     onMounted(() => {
       loadData()
     })
 
     return {
-      items
+      items,
+      gotoProduct
     }
     
   },
@@ -168,6 +183,8 @@ export default {
   //   items: []
   // }),
   // methods: {
+              // @click="gotoProduct(item)"
+    //
   // },
   // mounted(){
   //   this.loadData()

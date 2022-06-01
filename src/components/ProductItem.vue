@@ -40,7 +40,17 @@
 <script>
 import {reactive, toRefs} from 'vue'
 export default {
-    props: ['data'],
+    props: {
+        data: {
+            type: Object,
+            required: true,
+            default: () => ({
+                secondImage: {
+                    front: 'foo'
+                }
+            })
+        }
+    },
     setup(props){
         const product = reactive(props.data)
         // product.title = 'ertyuio' + product.title
