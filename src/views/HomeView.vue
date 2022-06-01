@@ -51,11 +51,18 @@
        <!--Section: Products v.3-->
       <section class="text-center mb-4">
 
+        <div v-if="items.loading">
+          loading catalogue...
+        </div>
+        <div v-if="items.error">
+          Error laoding catalogue
+        </div>
+
         <!--Grid row-->
         <div class="row wow fadeIn">
 
           <!--Grid column-->
-          <div class="col-lg-3 col-md-6 mb-4" v-for="(item, index) in items" :key="`${index}--items`">
+          <div class="col-lg-3 col-md-6 mb-4" v-for="(item, index) in items.items" :key="`${index}--items`">
 
             <ProductItem :data="item"/>
 
@@ -119,26 +126,51 @@
 <script>
 // @ is an alias to /src
 import ProductItem from '@/components/ProductItem'
+import { onMounted, reactive } from 'vue'
 
 export default {
   name: 'HomeView',
   components: {
     ProductItem
   },
-  data: () => ({
-    items: []
-  }),
-  methods: {
-    loadData(){
+  setup(){
+
+    let items = reactive({
+      loading: false,
+      error: false,
+      items: []
+    })
+
+    const loadData = () => {
+      items.loading = true
       fetch('https://fakestoreapi.com/products')
             .then(res=>res.json())
             .then(json=> {
-              this.items = json
+              items.items = json
+              items.loading = false
+            })
+            .catch(() => {
+                items.loading = false
+                  items.error = true
             })
     }
+
+    onMounted(() => {
+      loadData()
+    })
+
+    return {
+      items
+    }
+    
   },
-  mounted(){
-    this.loadData()
-  }
+  // data: () => ({
+  //   items: []
+  // }),
+  // methods: {
+  // },
+  // mounted(){
+  //   this.loadData()
+  // }
 }
 </script>

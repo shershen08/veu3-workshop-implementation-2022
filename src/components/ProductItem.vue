@@ -4,7 +4,7 @@
 
               <!--Card image-->
               <div class="view overlay">
-                <img :src="data.image" class="card-img-top"
+                <img :src="image" class="card-img-top"
                   alt="">
                 <a>
                   <div class="mask rgba-white-slight"></div>
@@ -16,7 +16,7 @@
               <div class="card-body text-center">
                 <!--Category & Title-->
                 <a href="" class="grey-text">
-                  <h5>{{data.title}}</h5>
+                  <h5>{{title}}</h5>
                 </a>
                 <h5>
                   <strong>
@@ -27,7 +27,7 @@
                 </h5>
 
                 <h4 class="font-weight-bold blue-text">
-                  <strong>{{data.price}}$</strong>
+                  <strong>{{price}}$</strong>
                 </h4>
 
               </div>
@@ -38,8 +38,16 @@
 </template>
 
 <script>
+import {reactive, toRefs} from 'vue'
 export default {
-    props: ['data']
+    props: ['data'],
+    setup(props){
+        const product = reactive(props.data)
+        // product.title = 'ertyuio' + product.title
+        return {
+            ...toRefs(product)
+        }
+    }
 }
 </script>
 
